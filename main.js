@@ -152,7 +152,7 @@ var mainState = {
     	game.physics.arcade.enable(balloon);
 
     	// Add velocity to the balloon to make it move
-    	balloon.body.velocity.y = 100;
+    	balloon.body.velocity.y = 150;
 
     	// Automatically kill the balloon when it's no longer visible 
     	balloon.checkWorldBounds = true;
@@ -165,16 +165,16 @@ var mainState = {
         // Screen width and height global initialised
         // in start function
 
-    	for (var i = 0; i < 10; i++) {
+    	for (var i = 0; i < 15; i++) {
             
             // Make sure these positions don't overlap
             // unless using transparent backgrounds and maybe
             // z positions with CSS or upper layer with Phaser?
 
             // X between 0 and 20% of game.width
-            var x = Math.floor(Math.random() * (game.width - 64)) + 1;
+            var x = Math.floor(Math.random() * (game.width - 150)) + 1;
             // Y between 0 and 20% of game.height
-            var y = Math.floor(Math.random() * (game.height - 64)) + 1;
+            var y = Math.floor(Math.random() * (game.height - 150)) + 1;
 
             this.addBalloon(x, y);
         }
