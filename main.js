@@ -40,8 +40,8 @@ var mainState = {
         // Here we set up the game, display sprites, etc.
 
         // Could use game.width and game.height...
-        screenWidth = game.width;
-        screenHeight = game.height;
+        screenWidth = window.innerWidth;;
+        screenHeight = window.innerHeight;
 
         // If this is not a desktop (so it's a mobile device) 
         if (game.device.desktop == false) {
@@ -171,10 +171,8 @@ var mainState = {
             // unless using transparent backgrounds and maybe
             // z positions with CSS or upper layer with Phaser?
 
-            // X between 0 and 20% of game.width
-            var x = Math.floor(Math.random() * (game.width - 150)) + 1;
-            // Y between 0 and 20% of game.height
-            var y = Math.floor(Math.random() * (game.height - 150)) + 1;
+            var x = Math.floor(Math.random() * screenWidth) + 1;
+            var y = Math.floor(Math.random() * screenHeight) + 1;
 
             this.addBalloon(x, y);
         }
