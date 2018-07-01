@@ -5,11 +5,6 @@
     tootytagames@gmail.com
 */
 
-// Screen width and height, initialised each time
-// the start function is called
-var screenWidth = 0; // window.innerWidth * window.devicePixelRatio;
-var screenHeight = 0; // window.innerHeight * window.devicePixelRatio;
-
 // Create our 'main' state that will contain the game
 var mainState = {
 
@@ -39,10 +34,6 @@ var mainState = {
         // This function is called after the preload function     
         // Here we set up the game, display sprites, etc.
 
-        // Could use game.width and game.height...
-        screenWidth = window.innerWidth;;
-        screenHeight = window.innerHeight;
-
         // If this is not a desktop (so it's a mobile device) 
         if (game.device.desktop == false) {
             
@@ -69,18 +60,15 @@ var mainState = {
     	// Create an empty group
 		this.balloons = game.add.group();
 
-    	// Call the 'pop' function when the spacekey is hit
-    	var spaceKey = game.input.keyboard.addKey(
-                    Phaser.Keyboard.SPACEBAR);
-    
-    	spaceKey.onDown.add(this.pop, this);
-
-        // Call the 'jump' function when we tap/click on the screen
-        game.input.onDown.add(this.pop, this);
-
     	this.score = 0;
 		this.labelScore = game.add.text(20, 20, "0", 
-    		{ font: "30px Arial", fill: "#ff0000" });   
+    		{ font: "30px Arial", fill: "#ff0000" });
+
+        /*
+        this.labelDebug = game.add.text(20, 60, "Debug... " + screenWidth + 
+            " " + screenHeight,
+            { font: "30px Arial", fill: "#ff0000"});
+        */
 
         this.popSound = game.add.audio('pop');
         this.cheeringSound = game.add.audio('yay');
@@ -88,8 +76,8 @@ var mainState = {
         // May not need this, we'll see...
         this.balloonCounter = 0;
 
-        // 
-    	this.timer = game.time.events.loop(3500, this.addBalloons, this);
+        // Every 2.5 sec...
+    	this.timer = game.time.events.loop(2500, this.addBalloons, this);
     },
 
     update: function() {
@@ -165,59 +153,33 @@ var mainState = {
         // Screen width and height global initialised
         // in start function
 
-    	for (var i = 0; i < 15; i++) {
+    	for (var i = 0; i < 10; i++) {
             
             // Make sure these positions don't overlap
             // unless using transparent backgrounds and maybe
             // z positions with CSS or upper layer with Phaser?
 
-            var x = Math.floor(Math.random() * screenWidth) + 1;
-            var y = Math.floor(Math.random() * screenHeight) + 1;
+            var x = Math.floor(Math.random() * (gwidth - 64)) + 1;
+            var y = Math.floor(Math.random() * (gheight / 2)) + 1;
 
             this.addBalloon(x, y);
         }
-
-        // this.score += 1;
-		// this.labelScore.text = this.score; 
 	},
-
-	hitPipe: function() {
-    
-    	// If the bug has already hit a pipe, do nothing
-    	// It means the bug is already falling off the screen
-    	if (this.bug.alive == false)
-        	return;
-
-    	// Set the alive property of the bug to false
-    	this.bug.alive = false;
-
-    	// Prevent new pipes from appearing
-    	game.time.events.remove(this.timer);
-
-    	// Go through all the pipes, and stop their movement
-    	this.pipes.forEach(function(p){
-        	p.body.velocity.x = 0;
-    	}, this);
-
-    	// Play chicken sound ... why chicken? lol
-    	this.dieSound.play();
-
-    	// Arrgh!
-
-    	// Add no text so the message doesn't appear on top
-    	// of the score
-
-    	this.labelScore.text = "Dead bug!";
-	}, 
-
+	
 };
 
 // Initialize Phaser, and create a 400px by 490px game
 // var game = new Phaser.Game(400, 490);
 
+var elem = (document.compatMode === "CSS1Compat") ? 
+    document.documentElement :
+    document.body;
+
+var gheight = elem.clientHeight;
+var gwidth = elem.clientWidth;
+
 // Initialize Phaser, make it scale nicely, we hope.
-var game = new Phaser.Game(window.innerWidth * window.devicePixelRatio,
-    window.innerHeight * window.devicePixelRatio, Phaser.CANVAS);
+var game = new Phaser.Game(gwidth, gheight, Phaser.CANVAS);
 
 // Add the 'mainState' and call it 'main'
 game.state.add('main', mainState); 
